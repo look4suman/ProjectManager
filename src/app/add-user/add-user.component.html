@@ -1,23 +1,29 @@
 <div>
   <div>
-    <form class="form-horizontal">
+    <form class="form-horizontal" (ngSubmit)="onSubmit(addUserForm)" [formGroup]="addUserForm">
       <div class="form-group">
-        <label class="control-label col-sm-2 lbl-custom">FirstName:</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter First Name">
+        <label class="control-label col-sm-2 lbl-custom">First Name:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="firstname" id="firstname" placeholder="Enter First Name"
+            formControlName="FirstName">
         </div>
+        <div *ngIf="formSubmitted && f.FirstName.errors" class="col-sm-4 invalid-feedback">First Name is required</div>
       </div>
       <div class="form-group">
-        <label class="control-label col-sm-2 lbl-custom">LastName:</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Enter Last Name">
+        <label class="control-label col-sm-2 lbl-custom">Last Name:</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Enter Last Name"
+            formControlName="LastName">
         </div>
+        <div *ngIf="formSubmitted && f.LastName.errors" class="col-sm-4 invalid-feedback">Last Name is required</div>
       </div>
       <div class="form-group">
         <label class="control-label col-sm-2 lbl-custom">Employee Id:</label>
-        <div class="col-sm-5">
-          <input type="number" class="form-control" name="empid" id="empid">
+        <div class="col-sm-3">
+          <input type="number" class="form-control" name="empid" id="empid" formControlName="EmployeeId">
         </div>
+        <div class="col-sm-3"></div>
+        <div *ngIf="formSubmitted && f.EmployeeId.errors" class="col-sm-4 invalid-feedback">Employee Id is required</div>
       </div>
       <div class="form-group">
         <div class="col-sm-2"></div>
@@ -25,7 +31,7 @@
           <input type="submit" value={{btnText}} class="btn form-control btn-custom">
         </div>
         <div class="col-sm-3">
-          <input type="button" value="Reset" class="btn form-control btn-custom">
+          <input type="button" value="Reset" class="btn form-control btn-custom" (click)="OnReset()">
         </div>
       </div>
     </form>
@@ -34,46 +40,45 @@
   <div class="form-horizontal">
     <div class="form-group">
       <div class="col-sm-4">
-        <input type="text" class="form-control" placeholder="Search" id="listSearch">
+        <input type="text" class="form-control" placeholder="Search" id="listSearch" [(ngModel)]="searchParam">
       </div>
       <div class="col-sm-2" style="text-align:right; padding-top:5px">Sort:</div>
       <div class="col-sm-2">
-        <input type="button" value="First Name" class="btn-default form-control" style="font-size:smaller">
+        <input type="button" value="First Name" class="btn-default form-control" style="font-size:smaller" (click)="SetSortParam('FirstName')">
       </div>
       <div class="col-sm-2">
-        <input type="button" value="Last Name" class="btn-default form-control" style="font-size:smaller">
+        <input type="button" value="Last Name" class="btn-default form-control" style="font-size:smaller" (click)="SetSortParam('LastName')">
       </div>
       <div class="col-sm-2">
-        <input type="button" value="Id" class="btn-default form-control" style="font-size:smaller">
+        <input type="button" value="Id" class="btn-default form-control" style="font-size:smaller" (click)="SetSortParam('EmployeeId')">
       </div>
     </div>
   </div>
-  <ul>
-    <li class="list-group-item">
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let user of users | filter:searchParam | sort:path:order">
       <div class="form-horizontal">
         <div class="form-group">
           <div class="col-sm-8">
-            <input type="text" class="form-control" name="fname" [disabled]="true" id="fname">
+            <input type="text" class="form-control" name="fname" [disabled]="true" id="fname" value="{{user.FirstName}}">
           </div>
           <div class="col-sm-4">
-            <input type="button" value="Edit" class="btn form-control btn-custom">
+            <input type="button" value="Edit" class="btn form-control btn-custom" (click)="OnEdit(user)">
           </div>
         </div>
         <div class="form-group">
           <div class="col-sm-8">
-            <input type="text" class="form-control" name="lname" [disabled]="true" id="lname">
+            <input type="text" class="form-control" name="lname" [disabled]="true" id="lname" value="{{user.LastName}}">
           </div>
           <div class="col-sm-4">
-            <input type="button" value="Delete" class="btn form-control btn-custom">
+            <input type="button" value="Delete" class="btn form-control btn-custom" (click)="OnDelete(user)">
           </div>
         </div>
         <div class="form-group">
           <div class="col-sm-8">
-            <input type="text" class="form-control" name="emp" [disabled]="true" id="emp">
+            <input type="text" class="form-control" name="emp" [disabled]="true" id="emp" value="{{user.EmployeeId}}">
           </div>
         </div>
       </div>
-      <hr>
     </li>
   </ul>
 </div>

@@ -1,0 +1,9 @@
+.lbl-custom {
+  text-align: right;
+}
+
+.btn-custom {
+  background: lightgray;
+  font-weight: bolder;
+  padding-left: 10px;
+}

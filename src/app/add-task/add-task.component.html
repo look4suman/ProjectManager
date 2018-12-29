@@ -1,0 +1,71 @@
+<div>
+  <form class="form-horizontal">
+    <div class="form-group">
+      <label class="control-label col-sm-2">Project:</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" name="prj" id="prj">
+      </div>
+      <div class="col-sm-2">
+        <input type="button" value="Search" [disabled]="isParentTask" class="form-control" id="mngr" class="btn btn-default">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Task:</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="task" id="task" placeholder="Enter Task Name">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-1">
+        <input type="checkbox" name="ptask" id="ptask">
+      </div>
+      <div class="col-sm-3">Parent Task</div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Priority:</label>
+      <div class="col-sm-10">
+        <input type="range" class="form-control" min="0" max="30" id="priority">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Parent Task:</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" name="task" id="task">
+      </div>
+      <input type="button" value="Search" [disabled]="isParentTask" class="form-control" id="mngr" class="btn btn-default">
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">Start Date:</label>
+      <div class="col-sm-10">
+        <input type="date" class="form-control" name="sdate" id="sdate">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">End Date:</label>
+      <div class="col-sm-10">
+        <input type="date" class="form-control" name="sdate" id="sdate">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-sm-2">User:</label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" name="usr" id="usr">
+      </div>
+      <div class="col-sm-2">
+        <input type="button" value="Search" [disabled]="isParentTask" class="form-control" id="mngr" class="btn btn-default">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-3">
+      </div>
+      <div class="col-sm-3">
+        <input type="submit" value="Add Task" style="background:grey ;font-weight:bolder" class="btn form-control">
+      </div>
+      <div class="col-sm-3">
+        <input type="button" value="Reset" style="background:grey ;font-weight:bolder; border: 1px; border-color: black"
+          class="btn form-control">
+      </div>
+    </div>
+  </form>
+</div>

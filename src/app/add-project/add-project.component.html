@@ -1,49 +1,54 @@
 <div>
   <div>
-    <form class="form-horizontal">
+    <form class="form-horizontal" [formGroup]="addProjectForm" (ngSubmit)="OnFormSubmit()">
       <div class="form-group">
         <div class="row" style="margin-bottom:10px">
           <label class="control-label col-sm-2 lbl-custom">Project:</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="pname" id="pname" placeholder="Enter Project Name">
+          <div class="col-sm-7">
+            <input type="text" class="form-control" name="pname" id="pname" placeholder="Enter Project Name"
+              formControlName="ProjectName">
           </div>
+          <div *ngIf="formSubmitted && f.ProjectName.errors" class="col-sm-3 invalid-feedback">Project Name is required</div>
         </div>
         <div class="row" style="margin-bottom:10px">
           <div class="col-sm-2"></div>
           <div class="col-sm-1">
-            <input type="checkbox" style="margin-top:10px" name="setdate" id="setdate">
+            <input type="checkbox" style="margin-top:10px" name="setdate" id="setdate" formControlName="SetDate"
+              (change)="setDateChanged($event)">
           </div>
-          <label class="col-sm-3 control-label lbl-custom">Set start date & end date</label>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" name="sdate" id="sdate">
+          <label class="col-sm-2 control-label lbl-custom">Set start date & end date</label>
+          <div class="col-sm-2">
+            <input type="date" class="form-control" name="sdate" id="sdate" formControlName="StartDate">
           </div>
-          <div class="col-sm-3">
-            <input type="date" class="form-control" name="edate" id="edate">
+          <div class="col-sm-2">
+            <input type="date" class="form-control" name="edate" id="edate" formControlName="EndDate">
           </div>
         </div>
         <div class="row" style="margin-bottom:10px">
           <label class="control-label col-sm-2 lbl-custom">Priority:</label>
-          <div class="col-sm-10">
-            <input type="range" class="form-control" min="0" max="30" id="priority">
+          <div class="col-sm-7">
+            <input type="range" class="form-control" min="0" max="30" id="priority" formControlName="Priority">
           </div>
+          <div *ngIf="formSubmitted && f.Priority.errors" class="col-sm-3 invalid-feedback">Priority is required</div>
         </div>
         <div class="row" style="margin-bottom:10px">
           <label class="control-label col-sm-2 lbl-custom">Manager:</label>
-          <div class="col-sm-8">
-            <input type="text" class="form-control" id="mngr">
+          <div class="col-sm-6">
+            <input type="text" class="form-control" id="mngr" formControlName="ManagerName">
           </div>
-          <div class="col-sm-2">
-            <input type="button" value="Search" class="form-control" id="mngr" class="btn btn-default">
+          <div class="col-sm-1">
+            <input type="button" value="Search" class="form-control" id="mngr" class="btn btn-default" (click)="OpenModal()">
           </div>
+          <div *ngIf="formSubmitted && f.ManagerName.errors" class="col-sm-3 invalid-feedback">Manager
+            Name is required</div>
         </div>
         <div class="row" style="margin-bottom:10px">
-          <div class="col-sm-3">
-          </div>
+          <div class="col-sm-2"></div>
           <div class="col-sm-3">
             <input type="submit" value={{btnText}} class="btn form-control btn-custom">
           </div>
           <div class="col-sm-3">
-            <input type="button" value="Reset" class="btn form-control btn-custom">
+            <input type="button" value="Reset" class="btn form-control btn-custom" (click)="OnReset()">
           </div>
         </div>
       </div>
@@ -126,7 +131,6 @@
           </div>
         </div>
       </div>
-      <hr>
     </li>
   </ul>
 </div>

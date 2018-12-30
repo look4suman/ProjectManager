@@ -1,1 +1,32 @@
-
+<div class="form-horizontal">
+  <div class="form-group">
+    <div class="col-sm-4">
+      <input type="text" class="form-control" placeholder="Search" [(ngModel)]="query" id="listSearch">
+    </div>
+  </div>
+</div>
+<ul class="list-group">
+  <li class="list-group-item" *ngFor="let user of users | filter : query | sort : path : order">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="fname" value="{{user.FirstName}}" [disabled]="true" id="fname">
+        </div>
+        <div class="col-sm-3">
+          <input type="button" (click)=Select(user) value="Select" style="background: lightgrey ;font-weight:bolder; border: 1px; border-color: black"
+            class="btn  form-control">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="lname" value="{{user.LastName}}" [disabled]="true" id="lname">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="emp" value="{{user.EmployeeId}}" [disabled]="true" id="emp">
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>

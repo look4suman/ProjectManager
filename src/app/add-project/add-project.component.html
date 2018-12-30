@@ -39,8 +39,6 @@
           <div class="col-sm-1">
             <input type="button" value="Search" class="form-control" id="mngr" class="btn btn-default" (click)="OpenModal()">
           </div>
-          <div *ngIf="formSubmitted && f.ManagerName.errors" class="col-sm-3 invalid-feedback">Manager
-            Name is required</div>
         </div>
         <div class="row" style="margin-bottom:10px">
           <div class="col-sm-2"></div>
@@ -57,26 +55,26 @@
   <div class="form-horizontal">
     <div class="form-group">
       <div class="col-sm-3">
-        <input type="text" class="form-control" placeholder="Search" id="listSearch">
+        <input type="text" class="form-control" placeholder="Search" id="listSearch" [(ngModel)]="searchParam">
       </div>
       <div class="col-sm-1" style="text-align: right; padding-top: 5px">Sort:</div>
       <div class="col-sm-2">
-        <input type="button" value="Start Date" class="btn-default form-control" style="font-size:smaller">
+        <input type="button" value="Start Date" class="btn-default form-control" style="font-size:smaller" (click)="SetSortParam('StartDate')">
       </div>
       <div class="col-sm-2">
-        <input type="button" value="End Date" class="btn-default form-control" style="font-size:smaller">
+        <input type="button" value="End Date" class="btn-default form-control" style="font-size:smaller" (click)="SetSortParam('EndDate')">
       </div>
       <div class="col-sm-2">
-        <input type="button" value="Priority" class="btn-default  form-control" style="font-size:smaller">
+        <input type="button" value="Priority" class="btn-default  form-control" style="font-size:smaller" (click)="SetSortParam('Priority')">
       </div>
       <div class="col-sm-2">
-        <input type="button" value="Completed" class="btn-default  form-control" style="font-size:smaller">
+        <input type="button" value="Completed" class="btn-default  form-control" style="font-size:smaller" (click)="SetSortParam('CompletedTasks')">
       </div>
     </div>
 
   </div>
   <ul class="list-group">
-    <li class="list-group-item">
+    <li class="list-group-item" *ngFor="let project of projects | filter : searchParam | sort : path : order">
       <div class="form-horizontal">
         <div class="form-group">
           <div class="col-sm-8" style="background-color: #eee; border-radius: 10px">
@@ -84,29 +82,29 @@
               <tr style="margin-bottom:5px">
                 <td class="col-sm-2" style="font-size:smaller">Project:</td>
                 <td class="col-sm-4">
-                  <input type="text" class="form-control" name="fname" [disabled]="true" id="fname">
+                  <input type="text" class="form-control" name="fname" [disabled]="true" id="fname" value="{{project.Project}}">
                 </td>
               </tr>
               <br>
               <tr>
                 <td class="col-sm-1" style="font-size:smaller">No of Tasks:</td>
                 <td class="col-sm-4">
-                  <input type="text" class="form-control" name="tc" [disabled]="true" id="tc">
+                  <input type="text" class="form-control" name="tc" [disabled]="true" id="tc" value="{{project.TaskCount}}">
                 </td>
                 <td class="col-sm-1" style="font-size:smaller">Completed Tasks:</td>
                 <td class="col-sm-4">
-                  <input type="text" class="form-control" name="ct" [disabled]="true" id="ct">
+                  <input type="text" class="form-control" name="ct" [disabled]="true" id="ct" value="{{project.CompletedTasks}}">
                 </td>
               </tr>
               <br>
               <tr>
                 <td class="col-sm-1" style="font-size:smaller">StartDate:</td>
                 <td class="col-sm-4">
-                  <input type="text" class="form-control" name="sd" [disabled]="true" id="sd">
+                  <input type="text" class="form-control" name="sd" [disabled]="true" id="sd" value="{{project.StartDate}}">
                 </td>
                 <td class="col-sm-1" style="font-size:smaller">EndDate:</td>
                 <td class="col-sm-4">
-                  <input type="text" class="form-control" name="ed" [disabled]="true" id="ed">
+                  <input type="text" class="form-control" name="ed" [disabled]="true" id="ed" value="{{project.EndDate}}">
                 </td>
               </tr>
             </table>
@@ -115,18 +113,18 @@
             <div style="font-size:smaller">Priority:</div>
             <br>
             <div>
-              <input type="text" class="form-control" name="pt" [disabled]="true" id="pt">
+              <input type="text" class="form-control" name="pt" [disabled]="true" id="pt" value="{{project.Priority}}">
             </div>
           </div>
           <div class="col-sm-2">
             <div>
-              <input type="button" value="Edit" class="btn form-control btn-custom">
+              <input type="button" value="Edit" class="btn form-control btn-custom" (click)="OnEdit(project)">
             </div>
             <div>
               <br>
             </div>
             <div>
-              <input type="button" value="Suspend" class="btn form-control btn-custom">
+              <input type="button" value="Suspend" class="btn form-control btn-custom" (click)="OnSuspend(project)">
             </div>
           </div>
         </div>

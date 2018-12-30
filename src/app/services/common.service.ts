@@ -3,6 +3,7 @@ import { UserModel } from '../model/user-model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
+import { ProjectModel } from '../model/project-model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,28 +14,48 @@ export class CommonService {
 
   baseUrl = environment.baseUrl;
 
-  getUsers(): Observable<UserModel[]> {
+  GetUsers(): Observable<UserModel[]> {
     let url = this.baseUrl + 'GetUser';
     return this.http.get<UserModel[]>(url);
   }
 
-  getUserById(Id: number): Observable<UserModel> {
+  GetUserById(Id: number): Observable<UserModel> {
     let url = this.baseUrl + 'User/' + Id;
     return this.http.get<UserModel>(url);
   }
 
-  addUser(model: UserModel): Observable<object> {
+  AddUser(model: UserModel): Observable<object> {
     let url = this.baseUrl + 'AddUser';
     return this.http.post(url, model);
   }
 
-  updateUser(model: UserModel): Observable<object> {
+  UpdateUser(model: UserModel): Observable<object> {
     let url = this.baseUrl + 'UpdateUser';
     return this.http.post(url, model);
   }
 
-  deleteUser(Id: number): Observable<object> {
+  DeleteUser(Id: number): Observable<object> {
     let url = this.baseUrl + 'DeleteUser/' + Id;
     return this.http.delete(url);
+  }
+
+  GetProjects(): Observable<ProjectModel[]> {
+    let url = this.baseUrl + 'GetProject';
+    return this.http.get<ProjectModel[]>(url);
+  }
+
+  AddProject(model: ProjectModel): Observable<object> {
+    let url = this.baseUrl + 'AddProject';
+    return this.http.post(url, model);
+  }
+
+  UpdateProject(model: ProjectModel): Observable<object> {
+    let url = this.baseUrl + 'UpdateProject';
+    return this.http.post(url, model);
+  }
+
+  EndProject(model: ProjectModel): Observable<object> {
+    let url = this.baseUrl + 'EndProject';
+    return this.http.put(url, model);
   }
 }

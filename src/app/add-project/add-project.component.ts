@@ -24,19 +24,22 @@ export class AddProjectComponent implements OnInit {
   path: string;
   order: number = 1;
   isSetDateChecked = false;
-  startDate = new Date();
-  endDate = this.startDate.setDate(this.startDate.getDate() + 1);
+  startDate: Date;
+  endDate: Date;
   manager: UserModel;
 
   ngOnInit() {
+    this.startDate = new Date();
+    this.endDate = new Date(this.startDate.setDate(this.startDate.getDate() + 1));
+
     this.addProjectForm = new FormGroup({
       Project_ID: new FormControl(0),
       ProjectName: new FormControl('', Validators.required),
       StartDate: new FormControl({ value: this.startDate.toISOString().substring(0, 10), disabled: !this.isSetDateChecked }, Validators.required),
-      EndDate: new FormControl({ value: new Date(this.endDate).toISOString().substring(0, 10), disabled: !this.isSetDateChecked }, Validators.required),
+      EndDate: new FormControl({ value: this.endDate.toISOString().substring(0, 10), disabled: !this.isSetDateChecked }, Validators.required),
       SetDate: new FormControl(this.isSetDateChecked),
       Priority: new FormControl(0),
-      ManagerName: new FormControl({ value: '', disabled: true }, Validators.required)
+      ManagerName: new FormControl({ value: '', disabled: true })
     });
     this.Initialize();
     this.GetProjects();
@@ -52,7 +55,9 @@ export class AddProjectComponent implements OnInit {
   get f() { return this.addProjectForm.controls; }
 
   GetProjects(): any {
-
+    this.service.GetProjects().subscribe(restItems => {
+      this.projects = restItems;
+    });
   }
 
   setDateChanged(e: any) {
@@ -65,7 +70,7 @@ export class AddProjectComponent implements OnInit {
 
       this.addProjectForm.patchValue({
         StartDate: this.startDate.toISOString().substring(0, 10),
-        EndDate: new Date(this.endDate).toISOString().substring(0, 10)
+        EndDate: this.endDate.toISOString().substring(0, 10)
       });
     }
   }
@@ -74,7 +79,6 @@ export class AddProjectComponent implements OnInit {
     const dialogRef = this.dialog.open(UserSearchComponent, {
       width: '600px',
       height: '400px',
-      //position: { left: '30%' },
       data: ''
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -90,9 +94,9 @@ export class AddProjectComponent implements OnInit {
       project.Project_ID = this.addProjectForm.value.Project_ID;
       project.Project = this.addProjectForm.value.ProjectName;
       project.Priority = this.addProjectForm.value.Priority;
-      project.StartDate = this.addProjectForm.value.StartDate;
-      project.EndDate = this.addProjectForm.value.EndDate;
-      project.SetDate = this.addProjectForm.value.SetDate;
+      project.StartDate = this.addProjectForm.getRawValue().StartDate;
+      project.EndDate = this.addProjectForm.getRawValue().EndDate;
+      project.SetDate = this.addProjectForm.getRawValue().SetDate;
       if (this.manager) {
         project.UserId = this.manager.User_ID;
       }
@@ -102,26 +106,38 @@ export class AddProjectComponent implements OnInit {
       } else {
         this.AddProject(project);
       }
+
+      this.OnReset();
     }
   }
 
   AddProject(project: ProjectModel): any {
-    throw new Error("Method not implemented.");
+    this.service.AddProject(project).subscribe(() => {
+      this.GetProjects();
+    });
   }
 
   UpdateProject(project: ProjectModel): any {
-    throw new Error("Method not implemented.");
+    this.service.UpdateProject(project).subscribe(() => {
+      this.GetProjects();
+    });
   }
 
   OnReset() {
     this.addProjectForm.reset();
     this.Initialize();
+    this.addProjectForm.patchValue({
+      StartDate: this.startDate.toISOString().substring(0, 10),
+      EndDate: this.endDate.toISOString().substring(0, 10),
+      Priority: 0,
+      SetDate: false
+    });
   }
 
   ValidateDates(formObject: any) {
     if (formObject) {
-      const startDate = formObject.value.StartDate;
-      const endDate = formObject.value.EndDate;
+      const startDate = formObject.getRawValue().StartDate;
+      const endDate = formObject.getRawValue().EndDate;
       if (startDate && endDate) {
         const dt1 = new Date(startDate);
         const dt2 = new Date(endDate);
@@ -134,4 +150,35 @@ export class AddProjectComponent implements OnInit {
     return true;
   }
 
+  SetSortParam(param: string) {
+    this.path = param;
+    this.order = this.order * -1;
+  }
+
+  OnEdit(model: ProjectModel) {
+    this.btnText = "Update Project";
+    this.isUpdating = true;
+
+    if (model.UserId) {
+      let managerName: string;
+      this.service.GetUserById(model.UserId).subscribe(
+        o => this.addProjectForm.patchValue({
+          ManagerName: (o.FirstName + " " + o.LastName)
+        }));
+    }
+    this.addProjectForm.patchValue({
+      Project_ID: model.Project_ID,
+      ProjectName: model.Project,
+      StartDate: new Date(model.StartDate).toISOString().substring(0, 10),
+      EndDate: new Date(model.EndDate).toISOString().substring(0, 10),
+      Priority: model.Priority,
+      SetDate: model.SetDate
+    });
+  }
+
+  OnSuspend(model: ProjectModel) {
+    this.service.EndProject(model).subscribe(() => {
+      this.GetProjects();
+    });
+  }
 }

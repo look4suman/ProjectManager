@@ -39,7 +39,7 @@ export class AddUserComponent implements OnInit {
   }
 
   GetUsers(): any {
-    this.service.getUsers().subscribe(
+    this.service.GetUsers().subscribe(
       items => {
         this.users = items;
       }
@@ -56,11 +56,11 @@ export class AddUserComponent implements OnInit {
       userModel.EmployeeId = this.addUserForm.value.EmployeeId;
 
       if (this.isUpdating) {
-        this.service.updateUser(userModel).subscribe(() => {
+        this.service.UpdateUser(userModel).subscribe(() => {
           this.GetUsers();
         });
       } else {
-        this.service.addUser(userModel).subscribe(() => {
+        this.service.AddUser(userModel).subscribe(() => {
           this.GetUsers();
         });
       }
@@ -87,7 +87,7 @@ export class AddUserComponent implements OnInit {
   }
 
   OnDelete(user: UserModel) {
-    this.service.deleteUser(user.User_ID).subscribe(() => {
+    this.service.DeleteUser(user.User_ID).subscribe(() => {
       this.GetUsers();
     });
   }

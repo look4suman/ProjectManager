@@ -23,11 +23,13 @@ export class UserSearchComponent implements OnInit {
   }
 
   Initialize() {
-    this.service.getUsers().subscribe(
-      restItems => {
-        this.users = restItems;
-      }
-    );
+    this.GetUsers();
+  }
+
+  private GetUsers() {
+    this.service.GetUsers().subscribe(restItems => {
+      this.users = restItems;
+    });
   }
 
   Select(user: any) {

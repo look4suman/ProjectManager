@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from '../services/common.service';
+import { MatDialogRef } from '@angular/material';
+import { ParentTaskModel } from '../model/parent-task-model';
 
 @Component({
   selector: 'app-parent-task-search',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ParentTaskSearchComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private commonService: CommonService, public dialModalRef: MatDialogRef<ParentTaskSearchComponent>) { }
+  parentTasks: ParentTaskModel[];
+  path: string;
+  query: string;
+  order = 1;
   ngOnInit() {
+    this.commonService.GetParentTasks().subscribe(result => {
+      this.parentTasks = result;
+    });
   }
 
+  Select(task: any) {
+    this.dialModalRef.close(task);
+  }
 }

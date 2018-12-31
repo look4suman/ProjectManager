@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { ProjectModel } from '../model/project-model';
+import { ParentTaskModel } from '../model/parent-task-model';
+import { TaskModel } from '../model/task-model';
 
 @Injectable({
   providedIn: 'root'
@@ -57,5 +59,20 @@ export class CommonService {
   EndProject(model: ProjectModel): Observable<object> {
     let url = this.baseUrl + 'EndProject';
     return this.http.put(url, model);
+  }
+
+  GetParentTasks(): Observable<ParentTaskModel[]> {
+    let url = this.baseUrl + 'GetParentTasks';
+    return this.http.get<ParentTaskModel[]>(url);
+  }
+
+  AddParentTask(model: ParentTaskModel): Observable<object> {
+    let url = this.baseUrl + 'AddParentTask';
+    return this.http.post(url, model);
+  }
+
+  AddTask(model: TaskModel): Observable<object> {
+    let url = this.baseUrl + 'AddTask';
+    return this.http.post(url, model);
   }
 }

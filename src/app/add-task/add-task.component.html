@@ -1,60 +1,70 @@
 <div>
-  <form class="form-horizontal">
+  <form class="form-horizontal" [formGroup]="addTaskForm" (ngSubmit)="OnFormSubmit()">
     <div class="form-group">
       <label class="control-label col-sm-2">Project:</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" name="prj" id="prj">
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="prj" id="prj" formControlName="ProjectName">
       </div>
       <div class="col-sm-2">
-        <input type="button" value="Search" [disabled]="isParentTask" class="form-control" id="mngr" class="btn btn-default">
+        <input type="button" value="Search" [disabled]="isParentTask" (click)="OpenProjectModal()" id="mngr" class="form-control btn btn-default">
       </div>
+      <div *ngIf="formSubmitted && f.ProjectName.errors" class="col-sm-3 invalid-feedback">Project is required</div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2">Task:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" name="task" id="task" placeholder="Enter Task Name">
+      <div class="col-sm-7">
+        <input type="text" class="form-control" name="task" id="task" placeholder="Enter Task Name" formControlName="Task">
       </div>
+      <div *ngIf="formSubmitted && f.Task.errors" class="col-sm-3 invalid-feedback">Task is required</div>
     </div>
     <div class="form-group">
       <div class="col-sm-2"></div>
       <div class="col-sm-1">
-        <input type="checkbox" name="ptask" id="ptask">
+        <input type="checkbox" name="ptask" id="ptask" (change)="setParentTask($event)" formControlName="IsParent">
       </div>
       <div class="col-sm-3">Parent Task</div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2">Priority:</label>
-      <div class="col-sm-10">
-        <input type="range" class="form-control" min="0" max="30" id="priority">
+      <div class="col-sm-7">
+        <input type="range" class="form-control" min="0" max="30" id="priority" [disabled]="isParentTask"
+          formControlName="Priority">
       </div>
+      <div *ngIf="formSubmitted && f.Priority.errors" class="col-sm-3 invalid-feedback">Priority is required</div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2">Parent Task:</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" name="task" id="task">
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="task" id="task" formControlName="ParentTask">
       </div>
-      <input type="button" value="Search" [disabled]="isParentTask" class="form-control" id="mngr" class="btn btn-default">
+      <div class="col-sm-2">
+        <input type="button" value="Search" [disabled]="isParentTask" id="mngr" class="form-control btn btn-default"
+          (click)="OpenParentTaskModal()">
+      </div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2">Start Date:</label>
-      <div class="col-sm-10">
-        <input type="date" class="form-control" name="sdate" id="sdate">
+      <div class="col-sm-7">
+        <input type="date" class="form-control" id="sdate" [disabled]="isParentTask" formControlName="StartDate">
       </div>
+      <div *ngIf="formSubmitted && f.StartDate.errors" class="col-sm-3 invalid-feedback">Start Date is required</div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2">End Date:</label>
-      <div class="col-sm-10">
-        <input type="date" class="form-control" name="sdate" id="sdate">
+      <div class="col-sm-7">
+        <input type="date" class="form-control" id="edate" [disabled]="isParentTask" formControlName="EndDate">
       </div>
+      <div *ngIf="formSubmitted && f.EndDate.errors" class="col-sm-3 invalid-feedback">End Date is required</div>
     </div>
     <div class="form-group">
       <label class="control-label col-sm-2">User:</label>
-      <div class="col-sm-8">
-        <input type="text" class="form-control" name="usr" id="usr">
+      <div class="col-sm-5">
+        <input type="text" class="form-control" name="usr" id="usr" formControlName="User">
       </div>
       <div class="col-sm-2">
-        <input type="button" value="Search" [disabled]="isParentTask" class="form-control" id="mngr" class="btn btn-default">
+        <input type="button" value="Search" [disabled]="isParentTask" (click)="OpenUserModal()" id="mngr" class="form-control btn btn-default">
       </div>
+      <div *ngIf="formSubmitted && f.User.errors" class="col-sm-3 invalid-feedback">User is required</div>
     </div>
     <div class="form-group">
       <div class="col-sm-3">
@@ -63,8 +73,8 @@
         <input type="submit" value="Add Task" style="background:grey ;font-weight:bolder" class="btn form-control">
       </div>
       <div class="col-sm-3">
-        <input type="button" value="Reset" style="background:grey ;font-weight:bolder; border: 1px; border-color: black"
-          class="btn form-control">
+        <input type="button" value="Reset" style="background:grey ;font-weight:bolder;" class="btn form-control"
+          (click)="OnReset()">
       </div>
     </div>
   </form>

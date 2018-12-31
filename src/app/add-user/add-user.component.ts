@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { UserModel } from '../model/user-model';
-import { Router } from '@angular/router';
 import { CommonService } from '../services/common.service';
 
 @Component({
@@ -10,7 +9,7 @@ import { CommonService } from '../services/common.service';
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent implements OnInit {
-  constructor(private service: CommonService, private router: Router) { }
+  constructor(private service: CommonService) { }
 
   btnText: string;
   addUserForm: FormGroup;

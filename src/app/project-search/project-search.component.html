@@ -1,3 +1,73 @@
-<p>
-  project-search works!
-</p>
+<div class="form-horizontal">
+  <div class="form-group">
+    <div class="col-sm-4">
+      <input type="text" class="form-control" placeholder="Search" [(ngModel)]="query" id="listSearch">
+    </div>
+  </div>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let project of projects | filter : query | sort : path : order">
+      <table class="">
+        <tr>
+          <td>
+            <table class="" style="background-color: #eee; border-radius: 10px">
+              <tr class="">
+                <td class="col-sm-2">Project:</td>
+                <td class="col-sm-4">
+                  <input type="text" class="form-control" name="fname" value="{{project.Project}}" [disabled]="true" id="fname">
+                </td>
+                <td class="col-sm-2">Priority:</td>
+                <td class="col-sm-4">
+                  <input type="text" class="form-control" name="pt" value="{{project.Priority}}" [disabled]="true" id="pt">
+                </td>
+              </tr>
+              <tr>
+                <br />
+              </tr>
+              <tr>
+                <td class="col-sm-1">
+                  No of Tasks:
+                </td>
+                <td class="col-sm-4">
+                  <input type="text" class="form-control" name="tc" value="{{project.TaskCount}}" [disabled]="true" id="tc">
+                </td>
+                <td class="col-sm-1">
+                  Completed Tasks:
+                </td>
+                <td class="col-sm-4">
+                  <input type="text" class="form-control" name="ct" value="{{project.CompletedTasks}}" [disabled]="true"
+                    id="ct">
+                </td>
+              </tr>
+              <tr>
+                <td class="col-sm-1">
+                  StartDate:
+                </td>
+                <td class="col-sm-4">
+                  <input type="text" class="form-control" name="sd" value="{{project.StartDate}}" [disabled]="true" id="sd">
+                </td>
+                <td class="col-sm-1">
+                  EndDate:
+                </td>
+                <td class="col-sm-4">
+                  <input type="text" class="form-control" name="ed" value="{{project.EndDate}}" [disabled]="true" id="ed">
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td>
+            <table style="margin-left: 10px;">
+              <tr>
+                <td class="col-sm-8">
+                  <input type="button" (click)=Select(project) value="Select" style="background:lightgray ;font-weight:bolder; border: 1px; border-color: black"
+                    class="btn  form-control">
+                </td>
+              </tr>
+              <tr>
+                <br />
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </li>
+  </ul>

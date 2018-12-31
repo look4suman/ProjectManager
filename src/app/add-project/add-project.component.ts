@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { UserModel } from '../model/user-model';
-import { Router } from '@angular/router';
 import { CommonService } from '../services/common.service';
 import { ProjectModel } from '../model/project-model';
 import { MatDialog } from '@angular/material';
@@ -14,7 +13,7 @@ import { UserSearchComponent } from '../user-search/user-search.component';
 })
 export class AddProjectComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private service: CommonService, private router: Router) { }
+  constructor(public dialog: MatDialog, private service: CommonService) { }
 
   addProjectForm: FormGroup;
   formSubmitted = false;

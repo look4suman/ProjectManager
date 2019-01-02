@@ -2,7 +2,7 @@
   <div class="form-group">
     <label class="control-label col-sm-1">Project:</label>
     <div class="col-sm-4">
-      <input type="text" [disabled]="true" class="form-control" name="prj" id="prj">
+      <input type="text" [disabled]="true" class="form-control" name="prj" id="prj" [(ngModel)]="ProjectName">
     </div>
     <div class="col-sm-1">
       <input type="button" value="Search" (click)="OpenProjectSearchModal()" class="btn-default form-control">
@@ -12,20 +12,50 @@
     </div>
     <div class="col-sm-1" style="text-align:right; padding-top:5px">Sort:</div>
     <div class="col-sm-1">
-      <input type="button" value="Start Date" class="btn-default form-control" style="font-size:x-small">
+      <input type="button" value="Start Date" class="btn-default form-control" style="font-size:x-small" (click)="SortData('StartDate')">
     </div>
     <div class="col-sm-1">
-      <input type="button" value="End Date" class="btn-default form-control" style="font-size:x-small">
+      <input type="button" value="End Date" class="btn-default form-control" style="font-size:x-small" (click)="SortData('EndDate')">
     </div>
     <div class="col-sm-1">
-      <input type="button" value="Priority" class="btn-default form-control" style="font-size:x-small">
+      <input type="button" value="Priority" class="btn-default form-control" style="font-size:x-small" (click)="SortData('Priority')">
     </div>
     <div class="col-sm-1">
-      <input type="button" value="Completed" class="btn-default form-control" style="font-size:x-small">
+      <input type="button" value="Completed" class="btn-default form-control" style="font-size:x-small" (click)="SortData('Completed')">
     </div>
   </div>
 </div>
-
-<div>
-
-</div>
+<ul class="list-group">
+  <li class="list-group-item" *ngFor="let task of tasks | filter : query | sort : path : order">
+    <div class="form-horizontal">
+      <div class="form-group">
+        <table class="table">
+          <tr>
+            <th>Task</th>
+            <th>Parent Task</th>
+            <th>Priority</th>
+            <th>Start</th>
+            <th>End</th>
+          </tr>
+          <tr>
+            <td>
+              <div class="jumbotron">{{task.Task}}</div>
+            </td>
+            <td>
+              <div class="jumbotron">{{task.ParentTask}}</div>
+            </td>
+            <td>{{task.Priority}}</td>
+            <td>{{task.StartDate}}</td>
+            <td>{{task.EndDate}}</td>
+            <td>
+              <button class="button" [disabled]="!task.IsEditable" (click)=EditTask(task)>Edit</button>
+            </td>
+            <td>
+              <button (click)=EndTask(task) [disabled]="!task.IsEditable" class="button">EndTask</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </li>
+</ul>

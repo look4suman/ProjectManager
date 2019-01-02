@@ -27,8 +27,8 @@ export class UserSearchComponent implements OnInit {
   }
 
   private GetUsers() {
-    this.service.GetUsers().subscribe(restItems => {
-      this.users = restItems;
+    this.service.GetUsers().subscribe(items => {
+      this.users = items;
     });
   }
 

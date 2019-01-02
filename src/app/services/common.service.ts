@@ -75,4 +75,24 @@ export class CommonService {
     let url = this.baseUrl + 'AddTask';
     return this.http.post(url, model);
   }
+
+  GetTasks(): Observable<TaskModel[]> {
+    let url = this.baseUrl + 'GetTasks';
+    return this.http.get<TaskModel[]>(url);
+  }
+
+  EndTask(model: TaskModel): Observable<object> {
+    let url = this.baseUrl + 'EndTask';
+    return this.http.put(url, model);
+  }
+
+  GetTaskById(Id: number): Observable<TaskModel> {
+    let url = this.baseUrl + 'Task/' + Id;
+    return this.http.get<TaskModel>(url);
+  }
+
+  UpdateTask(model: TaskModel): Observable<object> {
+    let url = this.baseUrl + 'UpdateTask';
+    return this.http.post(url, model);
+  }
 }

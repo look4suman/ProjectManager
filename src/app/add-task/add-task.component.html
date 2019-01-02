@@ -67,14 +67,14 @@
       <div *ngIf="formSubmitted && f.User.errors" class="col-sm-3 invalid-feedback">User is required</div>
     </div>
     <div class="form-group">
-      <div class="col-sm-3">
-      </div>
+      <div class="col-sm-3"></div>
       <div class="col-sm-3">
         <input type="submit" value="Add Task" style="background:grey ;font-weight:bolder" class="btn form-control">
       </div>
-      <div class="col-sm-3"></div>
-      <input type="button" value="Reset" style="background:grey ;font-weight:bolder;" class="btn form-control" (click)="OnReset()">
+      <div class="col-sm-3">
+        <input type="button" value="Reset" style="background:grey ;font-weight:bolder;" class="btn form-control"
+          (click)="OnReset()">
+      </div>
     </div>
-</div>
-</form>
+  </form>
 </div>

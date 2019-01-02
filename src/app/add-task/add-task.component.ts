@@ -33,14 +33,16 @@ export class AddTaskComponent implements OnInit {
 
   ngOnInit() {
     this.startDate = new Date();
-    this.endDate = new Date(this.startDate.setDate(this.startDate.getDate() + 1));
+    this.endDate = new Date();
+    this.startDate.setDate((this.startDate).getDate() + 1);
+    this.endDate.setDate((this.startDate).getDate() + 1);
 
     this.addTaskForm = new FormGroup({
       Task_ID: new FormControl(0),
       Task: new FormControl('', Validators.required),
       IsParent: new FormControl(false),
       ProjectName: new FormControl({ value: '', disabled: true }, Validators.required),
-      Priority: new FormControl({ value: 1, disabled: false }, Validators.min(0)),
+      Priority: new FormControl({ value: 0, disabled: false }, Validators.min(0)),
       ParentTask: new FormControl({ value: '', disabled: true }),
       StartDate: new FormControl({ value: this.startDate.toISOString().substring(0, 10), disabled: false }, Validators.required),
       EndDate: new FormControl({ value: this.endDate.toISOString().substring(0, 10), disabled: false }, Validators.required),
@@ -120,20 +122,19 @@ export class AddTaskComponent implements OnInit {
         this.service.AddParentTask(parentTask).subscribe();
       }
     } else {
-      if (!this.ValidateFormControls() && this.ValidateDates(this.addTaskForm) && !this.addTaskForm.invalid) {
-        let parentId = null;
-        if (this.selectedParent && this.selectedParent.Parent_ID) {
-          parentId = this.selectedParent.Parent_ID;
-        }
-        const task: TaskModel = {
+      if (this.ValidateDates(this.addTaskForm) && !this.addTaskForm.invalid) {
+        let task: TaskModel = {
           Task_ID: this.addTaskForm.value.Task_ID,
           Task: this.addTaskForm.value.Task,
           Priority: this.addTaskForm.value.Priority,
           StartDate: this.addTaskForm.value.StartDate,
           EndDate: this.addTaskForm.value.EndDate,
-          Project_ID: this.selectedProject.Project_ID,
-          User_ID: this.selectedUser.User_ID,
-          Parent_ID: parentId, Project: '', User: '', ParentTask: ''
+          Project_ID: this.selectedProject ? this.selectedProject.Project_ID : null,
+          User_ID: this.selectedUser ? this.selectedUser.User_ID : null,
+          Parent_ID: this.selectedParent ? this.selectedParent.Parent_ID : null,
+          Project: '',
+          User: '',
+          ParentTask: ''
         };
 
         this.service.AddTask(task).subscribe(result => {
@@ -141,23 +142,6 @@ export class AddTaskComponent implements OnInit {
         });
       }
     }
-  }
-
-  ValidateFormControls() {
-    let errorMessage = '';
-    let validationFailed = false;
-    if (!this.selectedProject || this.selectedProject.Project === '') {
-      errorMessage = 'Please select project \n';
-      validationFailed = true;
-    }
-    if (!this.selectedUser || this.selectedUser.FirstName === '') {
-      errorMessage = errorMessage + 'Please select User \n';
-      validationFailed = true;
-    }
-    if (validationFailed) {
-      alert(errorMessage);
-    }
-    return validationFailed;
   }
 
   ValidateDates(formObject: any) {
@@ -168,7 +152,7 @@ export class AddTaskComponent implements OnInit {
         const dt1 = new Date(startDate);
         const dt2 = new Date(endDate);
         if (dt1 > dt2) {
-          alert('Start Date cant be greater than End Date');
+          alert('Start Date cannot be greater than End Date');
           return false;
         }
       }
@@ -178,11 +162,10 @@ export class AddTaskComponent implements OnInit {
 
   OnReset() {
     this.addTaskForm.reset();
-    this.selectedParent = null;
-    this.selectedProject = null;
-    this.selectedUser = null;
+    this.Initialize();
     this.addTaskForm.patchValue({
-      SetDate: true, StartDate: this.startDate.toISOString().substring(0, 10),
+      Priority: 0,
+      StartDate: this.startDate.toISOString().substring(0, 10),
       EndDate: this.endDate.toISOString().substring(0, 10)
     });
   }

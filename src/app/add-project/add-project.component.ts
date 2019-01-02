@@ -29,7 +29,9 @@ export class AddProjectComponent implements OnInit {
 
   ngOnInit() {
     this.startDate = new Date();
-    this.endDate = new Date(this.startDate.setDate(this.startDate.getDate() + 1));
+    this.endDate = new Date();
+    this.startDate.setDate((this.startDate).getDate() + 1);
+    this.endDate.setDate((this.startDate).getDate() + 1);
 
     this.addProjectForm = new FormGroup({
       Project_ID: new FormControl(0),

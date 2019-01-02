@@ -20,9 +20,11 @@ export class ViewTaskComponent implements OnInit {
   path: string;
   query: string;
   order = 1;
+
   ngOnInit() {
     this.Initialize();
   }
+
   Initialize() {
     this.service.GetTasks().subscribe(
       items => {
@@ -59,7 +61,10 @@ export class ViewTaskComponent implements OnInit {
   }
 
   EndTask(task: TaskModel) {
-    this.service.EndTask(task).subscribe(item => { this.Initialize(); this.ClearSearch(); });
+    this.service.EndTask(task).subscribe(item => {
+      this.Initialize();
+      this.ClearSearch();
+    });
   }
 
   EditTask(task: TaskModel) {

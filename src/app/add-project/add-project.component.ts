@@ -42,6 +42,7 @@ export class AddProjectComponent implements OnInit {
       Priority: new FormControl(0),
       ManagerName: new FormControl({ value: '', disabled: true })
     });
+
     this.Initialize();
     this.GetProjects();
   }

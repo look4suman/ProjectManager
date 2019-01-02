@@ -9,6 +9,7 @@ import { ParentTaskModel } from '../model/parent-task-model';
 import { ProjectSearchComponent } from '../project-search/project-search.component';
 import { UserSearchComponent } from '../user-search/user-search.component';
 import { ParentTaskSearchComponent } from '../parent-task-search/parent-task-search.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-task',
@@ -17,8 +18,9 @@ import { ParentTaskSearchComponent } from '../parent-task-search/parent-task-sea
 })
 export class AddTaskComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private service: CommonService) { }
+  constructor(public dialog: MatDialog, private service: CommonService, private route: ActivatedRoute) { }
 
+  btnText: string;
   addTaskForm: FormGroup;
   formSubmitted = false;
   isUpdating = false;
@@ -30,8 +32,11 @@ export class AddTaskComponent implements OnInit {
   selectedProject: ProjectModel;
   selectedParent: ParentTaskModel;
   isParentTask: boolean;
+  taskId: number;
 
   ngOnInit() {
+    this.taskId = this.route.snapshot.params.taskid;
+
     this.startDate = new Date();
     this.endDate = new Date();
     this.startDate.setDate((this.startDate).getDate() + 1);
@@ -48,10 +53,55 @@ export class AddTaskComponent implements OnInit {
       EndDate: new FormControl({ value: this.endDate.toISOString().substring(0, 10), disabled: false }, Validators.required),
       User: new FormControl({ value: '', disabled: true }, Validators.required)
     });
-    this.Initialize();
+
+    if (this.taskId) {
+      this.OnEdit();
+    } else {
+      this.Initialize();
+    }
+  }
+
+  OnEdit() {
+    this.formSubmitted = false;
+    this.isUpdating = true;
+    this.btnText = 'Edit Task';
+    this.service.GetTaskById(this.taskId).subscribe(o =>
+      this.PopulateDetails(o)
+    );
+  }
+
+  PopulateDetails(model: TaskModel) {
+    if (model) {
+      this.addTaskForm.patchValue({
+        Task_ID: model.Task_ID,
+        Task: model.Task,
+        ProjectName: model.Project,
+        Priority: model.Priority,
+        ParentTask: model.ParentTask,
+        StartDate: new Date(model.StartDate).toISOString().substring(0, 10),
+        EndDate: new Date(model.EndDate).toISOString().substring(0, 10),
+        User: model.User,
+      });
+
+      if (model.Project_ID) {
+        this.selectedProject = new ProjectModel();
+        this.selectedProject.Project_ID = model.Project_ID;
+      }
+
+      if (model.Parent_ID) {
+        this.selectedParent = new ParentTaskModel();
+        this.selectedParent.Parent_ID = model.Parent_ID;
+      }
+
+      if (model.User_ID) {
+        this.selectedUser = new UserModel();
+        this.selectedUser.User_ID = model.User_ID;
+      }
+    }
   }
 
   Initialize() {
+    this.btnText = 'Add Task';
     this.formSubmitted = false;
     this.isUpdating = false;
     this.selectedUser = null;
@@ -137,9 +187,12 @@ export class AddTaskComponent implements OnInit {
           ParentTask: ''
         };
 
-        this.service.AddTask(task).subscribe(result => {
-          this.OnReset();
-        });
+        if (this.isUpdating) {
+          this.service.UpdateTask(task).subscribe();
+        } else {
+          this.service.AddTask(task).subscribe();
+        }
+        this.OnReset();
       }
     }
   }

@@ -32,6 +32,7 @@ export class AddTaskComponent implements OnInit {
   selectedProject: ProjectModel;
   selectedParent: ParentTaskModel;
   isParentTask: boolean;
+  isProjectDisabled: boolean;
   taskId: number;
 
   ngOnInit() {
@@ -97,6 +98,8 @@ export class AddTaskComponent implements OnInit {
         this.selectedUser = new UserModel();
         this.selectedUser.User_ID = model.User_ID;
       }
+      this.isProjectDisabled = true;
+      this.addTaskForm.get('IsParent').disable();
     }
   }
 
@@ -118,11 +121,13 @@ export class AddTaskComponent implements OnInit {
       this.addTaskForm.get('Priority').disable();
       this.addTaskForm.get('ParentTask').disable();
       this.isParentTask = true;
+      this.isProjectDisabled = true;
     } else {
       this.addTaskForm.get('StartDate').enable();
       this.addTaskForm.get('EndDate').enable();
       this.addTaskForm.get('Priority').enable();
       this.isParentTask = false;
+      this.isProjectDisabled = false;
     }
   }
 
@@ -170,6 +175,7 @@ export class AddTaskComponent implements OnInit {
         let parentTask: ParentTaskModel = new ParentTaskModel();
         parentTask.Parent_Task = this.addTaskForm.value.Task;
         this.service.AddParentTask(parentTask).subscribe();
+        this.OnReset();
       }
     } else {
       if (this.ValidateDates(this.addTaskForm) && !this.addTaskForm.invalid) {

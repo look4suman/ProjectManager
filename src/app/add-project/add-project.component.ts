@@ -48,7 +48,7 @@ export class AddProjectComponent implements OnInit {
   }
 
   Initialize() {
-    this.btnText = 'Add User';
+    this.btnText = 'Add Project';
     this.formSubmitted = false;
     this.isUpdating = false;
     this.manager = null;
